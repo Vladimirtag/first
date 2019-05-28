@@ -1,0 +1,71 @@
+{% extends  'base.html'%}
+
+{% block title %}
+	{% for g in group  %}
+
+		{{ g.name }}
+	
+{% endfor %}
+{% endblock %}
+
+
+
+{% block choice %}
+<p><a href="{% url "boms" %}"><<< Обратно</a></p>
+{% endblock choice %}
+
+
+{% block heade %}{% endblock %}
+{% block page %}
+
+
+{% block titlename %}
+
+{% for g in group  %}
+	<h1>
+		Комплектация для: {{ g.name }}
+	</h1>
+{% endfor %}
+{% endblock titlename %}
+<p>Подсчетать для:</p>
+<p>
+	{{ parameter }}
+</p>
+
+<table>
+	<tr>
+		<td bgcolor='SteelBlue' class='text-center'> Номер на складе </td>
+		<td bgcolor='SteelBlue' class='text-center'> Part number </td>
+		<td bgcolor='SteelBlue' class='text-center'> Количество в приборе </td>
+		<td bgcolor='SteelBlue' class='text-center'> Количество на складе </td>
+	</tr>
+	{% for x in components  %}
+	<tr>
+		<td>{{x.number}}</td>
+		<td>{{ x.part_number.name }}</td>
+		<td> {{ x.quantity }}</td>
+		{% if x.complit < x.quantity  %}
+			<td bgcolor='Violet'><input type="number" color='Violet' value="{{x.complit}}" /></td>
+		{% elif x.complit > x.quantity %}
+			<td bgcolor='LightGreen'><input type="number" color='LightGreen' value="{{x.complit}}" /></td>
+			
+	{% endif %}
+
+
+
+
+		<!-- {{ x.part_number }}: {{ x.quantity }} -->
+	</tr>
+	{% endfor %}
+{% for summ in result  %}
+		<p>
+	
+			{{ summ.summ }}
+
+		</p>
+	
+{% endfor %}
+</table>
+<!-- {{ name }} -->
+
+{% endblock %}

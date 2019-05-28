@@ -1,0 +1,16 @@
+
+
+{% extends  'base.html'%}
+
+{% block choice %}
+	
+		<form id="" action="" method="post">
+		    {% csrf_token %}
+		{{ MultipleForm.as_table}}
+		{# {{ ComboBomsProcessor }} #}
+
+		    <input type="submit" value="Подсчетать" />
+		</form>
+
+
+{% endblock choice %}

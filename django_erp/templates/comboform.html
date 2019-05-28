@@ -1,0 +1,17 @@
+{% extends  'base.html'%}
+{% load staticfiles %}
+
+{% block choice %}
+КомбоФорма
+<script type="text/javascript">
+	
+</script>	
+		<form action="" method="post" name='form_plan'>
+		   {% csrf_token %} 
+		{{ ComboBoms }}
+		    <input type="submit" value="Посмотреть"  />
+		</form> 
+
+
+		<p>
+{% endblock choice %}

@@ -1,0 +1,9 @@
+{% extends "index.html" %}
+
+{% block choice_form %}
+	<form action="" method="POST" name='choice_form'>
+		{% csrf_token %} 
+		{{ myforma }}
+	<input type="submit" value="Send"  />
+	</form>
+{% endblock choice_form %}

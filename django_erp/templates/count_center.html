@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+	<h2>{{ device }} </h2><p>
+	<h4>
+		Штук: {{ count }} <p>
+	</h4>
+	<h3>Список компонентов:</h3>
+
+	
+<table>
+	<tr>
+		<h3>
+			
+		<td bgcolor='SteelBlue' class='text-center'> Номер на складе </td>
+		<td bgcolor='SteelBlue' class='text-center'> Part number </td>
+		<td bgcolor='SteelBlue' class='text-center'> Количество в приборе </td>
+		<td bgcolor='SteelBlue' class='text-center'> Количество на складе </td>
+		<td bgcolor='SteelBlue' class='text-center'> Потребуется </td>
+		<td bgcolor='SteelBlue' > Остаток </td>
+		
+		</h3>
+	</tr>
+	
+{% for x, y, z in full  %}
+	<tr>
+		<td>
+			{{x.number}}<p></p>
+		</td>
+		<td>
+			{{ x.part_number.name }}
+		</td>
+		<td>
+			{{ x.quantity }}
+		</td>
+			{% if x.complit < x.quantity  %}
+					<td bgcolor='Violet'><input type="number" color='Violet' value="{{x.complit}}" /></td>
+				{% elif x.complit > x.quantity %}
+					<td bgcolor='LightGreen'><input type="number" color='LightGreen' value="{{x.complit}}" /></td>
+			{% endif %}
+		<td> 
+			{{y}}
+		</td>
+		
+			{% if z < 0  %}
+					<td bgcolor='Violet'><input type="" color='Violet' value="{{z}}" /></td>
+			{% elif z > 0 %}
+					<td bgcolor='LightGreen'><input type="" color='LightGreen' value="{{z}}" /></td>
+			{% endif %}
+		
+	</tr>
+{% endfor %}
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td align="right">
+			<form action='' method='post' name='write_off'>
+				{% csrf_token %}
+				<input type="submit" value='Списать'>
+			</form>
+		</td>
+	</tr>
+</table>
+{% endblock content %}

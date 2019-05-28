@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>{% block title %}BOMList{% endblock %}</title>
+  <style>
+.line  {
+ border-top: 1px dashed #000; /* Параметры линии */
+ height: 18px; /* Высота блока */
+
+}
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="int.js" defer></script> -->
+ </head>
+<body>
+<table>
+	<tr>
+{# 		<td><a href="{% url "boms" %}">BOM</a></td> #}
+		<td><a href="{% url "add" %}">add</a></td>
+	</tr>
+</table>
+{% block head %}
+{% endblock %}
+
+{% block choice %}
+{% endblock choice %}
+
+{% block content %}
+	
+{% endblock content %}
+
+
+
+
+{% block footer %}
+{% endblock %}
+
+<script type="text/javascript">
+	
+
+
+
+
+  //   $(document).ready(
+ 	// function(){ alert(jQuery.fn.jquery); }); 
+
+// var test = $(this).html('#test_form');
+// console.log(test.html);
+var into = $( this ).html('#into');
+// $( myfunc );
+
+
+// function myfunc() {
+// 	text = 'privet';
+// 	console.log(text, test);
+// };
+
+
+// var test_form = $( this ).html('#test_form')
+// $( '#test_form' ).submit( function ( event ) { //event - обработчик события
+// 	console.log('Hi');
+// 	event.preventDefault();
+	
+// });
+
+
+function MyFunc( form ) {
+
+	var text = form.text_1.value;
+	alert(text);
+
+		
+}
+
+
+function getplan(form) {
+		var p = form.plan.value;
+		console.log(p);
+};
+
+</script>
+
+
+ </body>
+</html>
