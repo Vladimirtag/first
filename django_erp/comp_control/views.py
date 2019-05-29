@@ -28,28 +28,6 @@ def inbase(request):
 		post.number = row[0]
 		post.save()
 	return render(render, 'index.html')
-	# return models.Component.object.bulk_create(load)
-
-
-
-
-
-
-#Обрабтываем форму ComboBox с именами устройств
-# def get_boms(request):#/boms/
-# 	if request.method == 'GET':
-# 		form = GroupComponentsForm(request.GET)
-		
-# 			# device = form.cleaned_data['write_off_group_ditail']
-# 		items = form.cleaned_data['count_group_detail']
-# 		return HttpResponseRedirect('/bomlist/%s/rgerger' %  ( items))# multipleform = writeoff(request))
-
-# 	else:
-# 		form = GroupComponentsForm()
-# 		return render(request, 'comboform.html', {'ComboBoms':form})
-
-# def getMyParam(param):
-
 
 def jsres(request):
 	response = {'QuantityComponent':[{
@@ -109,11 +87,6 @@ def specification(request, bom_name):
     count = []
     group = []
     data_components = []
-    # ComboBoms = []
-	# if request.method =="POST":
-	# 	form = GroupComponentsForm(request.POST)
-		# if form.valid(): проверки можешь делать
-    # multipleform = TrashComponentsForm()
     q = GroupComponents.objects.all().filter(name = bom_name)
     for qq in q: #получаю построчно Группы
     	d = qq.components.all() #Вернет все Группы компонентов для QuantityComponent | Ныряем в
@@ -121,11 +94,6 @@ def specification(request, bom_name):
     context['name'] = count
     context['group'] = q
     context['count_form'] = TrashTouComponentsForm(request.POST)
-
-    # context['ComboBoms'] = GroupComponentsForm(request.POST)
-    # context['MultiplForm'] = multipleform
-    # context['release'] = multipleform.count()
-
     return render(request, "groupcomponents.html", context)
 
 
