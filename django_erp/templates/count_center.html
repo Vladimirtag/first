@@ -22,7 +22,7 @@
 		</h3>
 	</tr>
 	
-{% for x, y, z in full  %}
+{% for x, mnoj_result, z in full  %}
 	<tr>
 		<td>
 			{{x.number}}<p></p>
@@ -39,7 +39,7 @@
 					<td bgcolor='LightGreen'><input type="number" color='LightGreen' value="{{x.complit}}" /></td>
 			{% endif %}
 		<td> 
-			{{y}}
+			{{mnoj_result}}
 		</td>
 		
 			{% if z < 0  %}
@@ -56,12 +56,14 @@
 		<td></td>
 		<td></td>
 		<td></td>
+		<form action="" method="POST" name='write_off'>
+		{% csrf_token %} 
+			{{ write_of_forma }}
 		<td align="right">
-			<form action='' method='post' name='write_off'>
-			{% csrf_token %}
-				<input type="submit" value='Списать'>
-			</form>
+			<input type="submit" value="Списать"  />
 		</td>
+		</form>
 	</tr>
 </table>
+
 {% endblock content %}

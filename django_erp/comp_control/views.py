@@ -51,9 +51,10 @@ def forma(request):
 				form = MyForm()
 				return render(request, 'choice_form.html', {'myforma':form})
 			
-			mnoj_result = []
-			balance = []
-			sklad = []
+			#Основные хранилища
+			mnoj_result = [] # то, сколько будет нужно списать
+			balance = []     # вывод результата до списывания
+			sklad = []       # на склде до списывания
 			for qGroup in quantityGroup:
 				mnoj_result.append(qGroup.quantity * mnoj)
 
@@ -65,6 +66,8 @@ def forma(request):
 				balance.append(x - y)
 
 			context['full'] = zip(quantityGroup, mnoj_result, balance)
+			context['write_of_forma'] = form
+			# context['mnoj_result_quantity_groupt_objects'] = mnoj_result #передаю объекты/записи quantity
 			return render(request, 'count_center.html', context)
 	else:
 		form = MyForm()
