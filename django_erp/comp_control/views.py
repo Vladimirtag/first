@@ -44,8 +44,12 @@ def forma(request):
 			context['device'] = form.cleaned_data['write_off_group_ditail']
 			context['count'] = form.cleaned_data['count_group_detail'] 
 			mnoj = form.cleaned_data['count_group_detail']
-			device = context['device']
-			quantityGroup = QuantityComponent.objects.filter(groupcomponents__name__contains = device)
+			groupcomponents_id = GroupComponents.objects.get(name=context['device'])#Нельзя нзывать одинаково производимые девайсы
+
+			#покажи все QuantityComponents у которого имя GroupComponents которое приходит из формы.
+			#QuantityComponent это пара "" компонент и его количество ""
+			quantityGroup = QuantityComponent.objects.filter(groupcomponents__id__contains = groupcomponents_id.id)
+			# quantityGroup = quantityGroup.filter(id=5)
 			context['group_device'] = quantityGroup
 			if 	context['device'] == None or context['count'] == None:
 				form = MyForm()
@@ -67,6 +71,10 @@ def forma(request):
 
 			context['full'] = zip(quantityGroup, mnoj_result, balance)
 			context['write_of_forma'] = form
+			if 'write_off' in request.POST:
+				pass
+				
+
 			# context['mnoj_result_quantity_groupt_objects'] = mnoj_result #передаю объекты/записи quantity
 			return render(request, 'count_center.html', context)
 	else:

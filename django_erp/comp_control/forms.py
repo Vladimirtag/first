@@ -67,14 +67,14 @@ class TrashTouComponentsForm(forms.ModelForm):
 		# fields = ("__all__")
 		exclude = ['user', 'data', 'write_off_ditail', 'count_detail']
 
-
+CHOICES = (('1', 'First',), ('2', 'Second',))
 class MyForm(forms.ModelForm):
 	# count = forms.CharField(label='Your name', max_length=100)
+	# choice_field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 
 	class Meta:
 		model = models.TrashComponents
 		fields = ['write_off_group_ditail', 'count_group_detail']
-
 
 
 

@@ -30,19 +30,19 @@
 		<td>
 			{{ x.part_number.name }}
 		</td>
-		<td>
+		<td align="center">
 			{{ x.quantity }}
 		</td>
-			{% if x.complit < x.quantity  %}
+			{% if x.complit <= x.quantity  %}
 					<td bgcolor='Violet'><input type="number" color='Violet' value="{{x.complit}}" /></td>
 				{% elif x.complit > x.quantity %}
 					<td bgcolor='LightGreen'><input type="number" color='LightGreen' value="{{x.complit}}" /></td>
 			{% endif %}
-		<td> 
+		<td align="center"> 
 			{{mnoj_result}}
 		</td>
 		
-			{% if z < 0  %}
+			{% if z <= 0  %}
 					<td bgcolor='Violet'><input type="" color='Violet' value="{{z}}" /></td>
 			{% elif z > 0 %}
 					<td bgcolor='LightGreen'><input type="" color='LightGreen' value="{{z}}" /></td>
@@ -60,10 +60,11 @@
 		{% csrf_token %} 
 			{{ write_of_forma }}
 		<td align="right">
-			<input type="submit" value="Списать"  />
+			<input type="submit" value="Посмотреть предварительно" name='write' /> <p></p>
+			<input type="submit" value="Списать" name='write_off'  />
 		</td>
 		</form>
 	</tr>
 </table>
-
+{{post}}
 {% endblock content %}
