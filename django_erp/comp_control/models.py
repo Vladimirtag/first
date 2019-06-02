@@ -192,8 +192,9 @@ class Device(models.Model):
 class TrashComponents(models.Model):
 	data = models.DateTimeField('date_create', auto_now_add=True, blank=True)
 	user = models.ForeignKey('user', on_delete=models.CASCADE)
-	write_off_ditail = models.ForeignKey('component', on_delete=models.CASCADE, blank=True)
-	count_detail = models.IntegerField('количество списанных деталей', null=True, blank=True)
+	write_off_ditail = models.ManyToManyField('QuantityComponent', blank=True)
+	
+	# count_detail = models.IntegerField('количество списанных деталей', null=True, blank=True)
 	write_off_group_ditail = models.ForeignKey('groupcomponents', on_delete=models.CASCADE, blank=True)
 	count_group_detail = models.IntegerField('количество плат', null=True, blank=True)
 
