@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import *
 from django.shortcuts import redirect
 from django.db.models import Max
-import datetime
+from django.utils import timezone
 # Create your models here.
 
 
@@ -190,7 +190,7 @@ class Device(models.Model):
 		return '{0}'.format(self.component)
 
 class TrashComponents(models.Model):
-	data = models.DateTimeField('date_create', default=datetime.datetime.now, auto_now=True, auto_now_add=True)
+	data = models.DateTimeField('date_create', auto_now_add=True, blank=True)
 	user = models.ForeignKey('user', on_delete=models.CASCADE)
 	write_off_ditail = models.ForeignKey('component', on_delete=models.CASCADE, blank=True)
 	count_detail = models.IntegerField('количество списанных деталей', null=True, blank=True)
@@ -199,3 +199,9 @@ class TrashComponents(models.Model):
 
 	def __str__(self):
 		return '{0}'.format(self.write_off_group_ditail)
+
+	# def save(self, *args, **kwargs):
+	# 	if not self.id:
+	# 		self.data = timezone.now()
+	# 	self.data = timezone.now()
+	# 	return super(TrashComponents, self).save(*args, **kwargs)
