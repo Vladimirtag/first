@@ -59,12 +59,16 @@
 		<form action="" method="POST" name='write_off'>
 		{% csrf_token %} 
 			{{ write_of_forma }}
-		<td align="right">
-			<input type="submit" value="Посмотреть предварительно" name='write' /> <p></p>
-			<input type="submit" value="Списать" name='write_off'  />
-		</td>
+			<td align="right">
+				<input type="submit" value="Посмотреть предварительно" name='PreWrite' /> <p></p>
+				<input type="submit" value="Списать" name='write_off'  />
+			</td>
 		</form>
 	</tr>
 </table>
 {{post}}
+
+<br> <h3>
+		Всего позиций: {{count_quantity_group}}
+	</h3>
 {% endblock content %}

@@ -1,10 +1,10 @@
 from django.shortcuts import render, render_to_response, redirect
-from comp_control.models import GroupComponents, Component, QuantityComponent
+from comp_control.models import GroupComponents, Component, QuantityComponent, TrashComponents
 import xlrd, csv
 from django.template import RequestContext, loader
 from comp_control.forms import GroupComponentsForm, TrashComponentsForm, TrashTouComponentsForm, MyForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-
+from django.db.models import Count
 # Create your views here.
 
 
@@ -51,14 +51,17 @@ def forma(request):
 			quantityGroup = QuantityComponent.objects.filter(groupcomponents__id__contains = groupcomponents_id.id)
 			# quantityGroup = quantityGroup.filter(id=5)
 			context['group_device'] = quantityGroup
+			context['count_quantity_group'] = quantityGroup.count()#возвращает количество записей
+			# context['count_db'] = remove_duplicated(quantityGroup, context['device'])
 			if 	context['device'] == None or context['count'] == None:
 				form = MyForm()
 				return render(request, 'choice_form.html', {'myforma':form})
 			
 			#Основные хранилища
+			sklad = []       # на склде до списывания
 			mnoj_result = [] # то, сколько будет нужно списать
 			balance = []     # вывод результата до списывания
-			sklad = []       # на склде до списывания
+			save_total_balance = []
 			for qGroup in quantityGroup:
 				mnoj_result.append(qGroup.quantity * mnoj)
 
@@ -72,7 +75,16 @@ def forma(request):
 			context['full'] = zip(quantityGroup, mnoj_result, balance)
 			context['write_of_forma'] = form
 			if 'write_off' in request.POST:
-				pass
+				# trash = TrashComponents
+				# trash.wr
+
+				for x in quantityGroup:
+					x = x.quantity.count + 1000
+					x.save()
+
+					
+
+				
 				
 
 			# context['mnoj_result_quantity_groupt_objects'] = mnoj_result #передаю объекты/записи quantity

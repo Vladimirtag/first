@@ -1,13 +1,25 @@
 from django.db import models
 from django.urls import *
+from django.shortcuts import redirect
+from django.db.models import Max
+import datetime
 # Create your models here.
 
 
 # class My(models.Model):
 # 	name = models.CharField(max_length= 100)
 
-
-
+# def remove_duplicated(model, fields):
+# 	'Удаляет одинковые записа в таблице'
+# 	duplicates = model.values(*fields)
+# 	duplicates = duplicates.order_by()
+# 	duplicates = duplicates.annotate(
+# 		#Max вернет максимальный id, Count вернет количество объектов связаных через 'id'
+# 		max_id = models.Max('id'), count_id=models.Count('id')
+# 		)
+# 	#вернет количест
+# 	duplicates = duplicates.filter(count_id__gt=1)
+# 	return duplicates
 
 
 class Storage(models.Model):
@@ -144,8 +156,11 @@ class QuantityComponent(models.Model): #подсчитанные компоне�
 
 	def save(self):
 		super(QuantityComponent, self).save()
-		summ = self.quantity
-		return summ
+		quantity_list = QuantityComponent.objects.all()
+		for q_list in  quantity_list:
+			if q_list.part_number == self.part_number:
+				return redirect('/index/')
+
 
 
 	# def get_absolute_url(self):
@@ -175,7 +190,7 @@ class Device(models.Model):
 		return '{0}'.format(self.component)
 
 class TrashComponents(models.Model):
-	data = models.DateTimeField('date_create')
+	data = models.DateTimeField('date_create', default=datetime.datetime.now, auto_now=True, auto_now_add=True)
 	user = models.ForeignKey('user', on_delete=models.CASCADE)
 	write_off_ditail = models.ForeignKey('component', on_delete=models.CASCADE, blank=True)
 	count_detail = models.IntegerField('количество списанных деталей', null=True, blank=True)
