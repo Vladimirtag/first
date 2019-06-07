@@ -29,7 +29,8 @@ class QuantityComponentAdmin(admin.ModelAdmin):
 	form = forms.CuanityComponentForm
 
 
-
+class TrashComponentsAdmin(admin.ModelAdmin):
+	list_display = ('write_off_group_ditail', 'data', 'count_group_detail', 'user')
 
 
 
@@ -49,7 +50,7 @@ admin.site.register(models.QuantityComponent, QuantityComponentAdmin)
 admin.site.register(models.Type)
 admin.site.register(models.Unit)
 admin.site.register(models.Package)
-admin.site.register(models.TrashComponents)
+admin.site.register(models.TrashComponents, TrashComponentsAdmin)
 
 
 # class ComponentAdmin(admin.ModelAdmin):

@@ -46,7 +46,7 @@ class TrashComponentsForm(forms.ModelForm):
 	class Meta:
 		model = models.TrashComponents
 		# fields = ("__all__")
-		exclude = ['user', 'data', 'write_off_ditail', 'count_detail']
+		fields = ['user', 'count_group_detail', 'write_off_group_ditail']
 		# widgets = {
             
   #           'write_off_group_ditail': forms.CheckboxSelectMultiple(),
@@ -54,28 +54,6 @@ class TrashComponentsForm(forms.ModelForm):
   #       }
 
 		# widgets = {'check': forms.CheckboxSelectMultiple}
-
-
-class TrashTouComponentsForm(forms.ModelForm):
-
-	# def count(self):
-	# 	release = models.GroupComponents()
-	# 	return release
-	
-	class Meta:
-		model = models.TrashComponents
-		# fields = ("__all__")
-		exclude = ['user', 'data', 'write_off_ditail', 'count_detail']
-
-CHOICES = (('1', 'First',), ('2', 'Second',))
-class MyForm(forms.ModelForm):
-	# count = forms.CharField(label='Your name', max_length=100)
-	# choice_field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
-
-	class Meta:
-		model = models.TrashComponents
-		fields = ['write_off_group_ditail', 'count_group_detail']
-
 
 
 

@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response, redirect
 from comp_control.models import GroupComponents, Component, QuantityComponent, TrashComponents
 import xlrd, csv
 from django.template import RequestContext, loader
-from comp_control.forms import GroupComponentsForm, TrashComponentsForm, TrashTouComponentsForm, MyForm
+from comp_control.forms import GroupComponentsForm, TrashComponentsForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.db.models import Count
 # Create your views here.
@@ -38,7 +38,7 @@ def jsres(request):
 
 def forma(request):
 	if request.method == 'POST':
-		form = MyForm(request.POST)
+		form = TrashComponentsForm(request.POST)
 		context = {}
 		if form.is_valid():
 			context['device'] = form.cleaned_data['write_off_group_ditail']
@@ -49,12 +49,9 @@ def forma(request):
 			#покажи все QuantityComponents у которого имя GroupComponents которое приходит из формы.
 			#QuantityComponent это пара "" компонент и его количество ""
 			quantityGroup = QuantityComponent.objects.filter(groupcomponents__id__contains = groupcomponents_id.id)
-			# quantityGroup = quantityGroup.filter(id=5)
-			context['group_device'] = quantityGroup
 			context['count_quantity_group'] = quantityGroup.count()#возвращает количество записей
-			# context['count_db'] = remove_duplicated(quantityGroup, context['device'])
 			if 	context['device'] == None or context['count'] == None:
-				form = MyForm()
+				form = TrashComponentsForm()
 				return render(request, 'choice_form.html', {'myforma':form})
 			
 			#Основные хранилища
@@ -71,38 +68,32 @@ def forma(request):
 			pre_balance = zip(sklad, mnoj_result)	
 			for x, y in pre_balance:
 				balance.append(x - y)
-
 			context['full'] = zip(quantityGroup, mnoj_result, balance)
 			context['write_of_forma'] = form
+			
 			if 'write_off' in request.POST:
-				# trash = TrashComponents
-				# trash.wr
+				form = TrashComponentsForm(request.POST)
+				if form.is_valid():
+					summa = form.save(commit = False)
 
-				for x in quantityGroup:
-					x = x.quantity.count + 1000
-					x.save()
-
-					
-
-				
-				
-
-			# context['mnoj_result_quantity_groupt_objects'] = mnoj_result #передаю объекты/записи quantity
+					summa.save()
+					# write_of_forma = form.save()
+					# context['rrr'] = summ_detail
 			return render(request, 'count_center.html', context)
 	else:
-		form = MyForm()
+		form = TrashComponentsForm()
 	return render(request, 'choice_form.html', {'myforma':form})
 			
 
 def writeoff(request):#/boms/
 	if request.method == 'POST':
-		form = TrashTouComponentsForm(request.POST)
+		form = TrashComponentsForm(request.POST)
 		if form.is_valid():
 			bom_name = form.cleaned_data['write_off_group_ditail']#выбирем проверенные данные
 			multiple = form.cleaned_data['count_group_detail']
 			return redirect('/bomlist/{0}/{1}/'.format(bom_name, multiple))
 	else:
-		form = TrashTouComponentsForm()
+		form = TrashComponentsForm()
 	return render(request, 'groupcomponents.html', {'count_form':form})
 
 def specification(request, bom_name):
@@ -116,7 +107,7 @@ def specification(request, bom_name):
     	count = (qua for qua in d)
     context['name'] = count
     context['group'] = q
-    context['count_form'] = TrashTouComponentsForm(request.POST)
+    context['count_form'] = TrashComponentsForm(request.POST)
     return render(request, "groupcomponents.html", context)
 
 

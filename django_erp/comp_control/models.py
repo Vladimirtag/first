@@ -130,7 +130,7 @@ class GroupComponents(models.Model):
 	name = models.CharField(max_length=100)
 	number = models.CharField(max_length=50)
 	components = models.ManyToManyField("QuantityComponent")
-	plan = models.IntegerField('количество в производство', null=True, blank=True)
+	# plan = models.IntegerField('количество в производство', null=True, blank=True)
 
 
 	def __str__(self):
@@ -174,10 +174,6 @@ class QuantityComponent(models.Model): #подсчитанные компоне�
 		return '{0} _ | * quantity: {1}'.format(self.part_number, self.quantity)
 
 
-
-
-
-
 class Device(models.Model):
 	# name = models.CharField(max_length=100)
 	serial_number = models.IntegerField('serial_number', null=True, blank=True)
@@ -192,17 +188,13 @@ class Device(models.Model):
 class TrashComponents(models.Model):
 	data = models.DateTimeField('date_create', auto_now_add=True, blank=True)
 	user = models.ForeignKey('user', on_delete=models.CASCADE)
-	write_off_ditail = models.ManyToManyField('QuantityComponent', blank=True)
+	# write_off_ditail_in_bom = models.ManyToManyField('QuantityComponent', blank=True)
+	# write_of_component = models.ManyToManyField('Component', blank=True)
 	
 	# count_detail = models.IntegerField('количество списанных деталей', null=True, blank=True)
-	write_off_group_ditail = models.ForeignKey('groupcomponents', on_delete=models.CASCADE, blank=True)
-	count_group_detail = models.IntegerField('количество плат', null=True, blank=True)
+	write_off_group_ditail = models.ForeignKey('groupcomponents', on_delete=models.CASCADE, blank=True, null = True)
+	count_group_detail = models.IntegerField('количество плат', blank=True, null = True)
 
 	def __str__(self):
 		return '{0}'.format(self.write_off_group_ditail)
 
-	# def save(self, *args, **kwargs):
-	# 	if not self.id:
-	# 		self.data = timezone.now()
-	# 	self.data = timezone.now()
-	# 	return super(TrashComponents, self).save(*args, **kwargs)
