@@ -20,7 +20,7 @@ class ComponentAdmin(admin.ModelAdmin):
 # 	extra = 10
 
 
-class GroupComponentsAdmin(admin.ModelAdmin):
+class BomAdmin(admin.ModelAdmin):
 	filter_horizontal = ('components',)
 	# inlines = [BoxInLine]
 
@@ -44,7 +44,7 @@ admin.site.register(models.Position)
 admin.site.register(models.User)
 admin.site.register(models.Counting)
 admin.site.register(models.Device)
-admin.site.register(models.GroupComponents, GroupComponentsAdmin)
+admin.site.register(models.Bom, BomAdmin)
 admin.site.register(models.QuantityComponent, QuantityComponentAdmin)
 # admin.site.register(models.My)
 admin.site.register(models.Type)

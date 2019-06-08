@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response, redirect
-from comp_control.models import GroupComponents, Component, QuantityComponent, TrashComponents
+from comp_control.models import Bom, Component, QuantityComponent, TrashComponents
 import xlrd, csv
 from django.template import RequestContext, loader
 from comp_control.forms import GroupComponentsForm, TrashComponentsForm
@@ -44,11 +44,11 @@ def forma(request):
 			context['device'] = form.cleaned_data['write_off_group_ditail']
 			context['count'] = form.cleaned_data['count_group_detail'] 
 			mnoj = form.cleaned_data['count_group_detail']
-			groupcomponents_id = GroupComponents.objects.get(name=context['device'])#Нельзя нзывать одинаково производимые девайсы
+			groupcomponents_id = Bom.objects.get(name=context['device'])#Нельзя нзывать одинаково производимые девайсы
 
-			#покажи все QuantityComponents у которого имя GroupComponents которое приходит из формы.
+			#покажи все QuantityComponents у которого имя Bom которое приходит из формы.
 			#QuantityComponent это пара "" компонент и его количество ""
-			quantityGroup = QuantityComponent.objects.filter(groupcomponents__id__contains = groupcomponents_id.id)
+			quantityGroup = QuantityComponent.objects.filter(bom__id__contains = groupcomponents_id.id)
 			context['count_quantity_group'] = quantityGroup.count()#возвращает количество записей
 			if 	context['device'] == None or context['count'] == None:
 				form = TrashComponentsForm()
@@ -74,11 +74,29 @@ def forma(request):
 			if 'write_off' in request.POST:
 				form = TrashComponentsForm(request.POST)
 				if form.is_valid():
-					summa = form.save(commit = False)
+					forma_write_off = form.save(commit = False)
+					device = form['write_off_group_ditail']
+					quantity_list = QuantityComponent.objects.all()#возьми все детали пары "имя/количество"" для инстанса Bom
+					# quantity_obj = quantity_list.get(id = 1 )
+					# components = quantity.filter()
 
-					summa.save()
+					# for component in quantity_list: #QuantityComponent'ы ПАРЫ ОБЪЕКТЫ
+					y = [q.part_number for q in quantity_list]
+					# quantity_list_2 = Component.objects.filter(quantitycomponent__part_number = y[2] )
+
+
+					for qc_object in quantity_list:
+						# quantity_list_2 = Component.objects.get(quantitycomponent__part_number = qc_object.part_number )
+						qc_object
+
+					forma_write_off.save()
+					# component = [q.part_number for q in quantity_list]
 					# write_of_forma = form.save()
 					# context['rrr'] = summ_detail
+					context['component_list'] = quantity_list
+					# context['component']=component
+					context['component_2'] = qc_object
+					# context['comp']=res
 			return render(request, 'count_center.html', context)
 	else:
 		form = TrashComponentsForm()
@@ -101,7 +119,7 @@ def specification(request, bom_name):
     count = []
     group = []
     data_components = []
-    q = GroupComponents.objects.all().filter(name = bom_name)
+    q = Bom.objects.all().filter(name = bom_name)
     for qq in q: #получаю построчно Группы
     	d = qq.components.all() #Вернет все Группы компонентов для QuantityComponent | Ныряем в
     	count = (qua for qua in d)
@@ -115,7 +133,7 @@ def countspecification(request, device, multiple):
     if request.method=='GET':
         form = TrashComponentsForm(request.POST)
         context = {}
-        quantityGroupComponentsForDevice = QuantityComponent.objects.filter(groupcomponents__name__contains = device)
+        quantityGroupComponentsForDevice = QuantityComponent.objects.filter(bom__name__contains = device)
         context['result'] = quantityGroupComponentsForDevice
         if form.is_valid():
             parameter = form.cleaned_data.get('write_off_group_ditail')
@@ -123,3 +141,5 @@ def countspecification(request, device, multiple):
             context['parameter'] = parameter
 
     return render(request, "groupcomponents.html", context)
+
+

@@ -125,10 +125,10 @@ class User(models.Model):
 	def __str__(self):
 		return self.name
 
-class GroupComponents(models.Model):
+class Bom(models.Model):
 	"""Комплектация для сборки"""
 	name = models.CharField(max_length=100)
-	number = models.CharField(max_length=50)
+	# number = models.CharField(max_length=50)
 	components = models.ManyToManyField("QuantityComponent")
 	# plan = models.IntegerField('количество в производство', null=True, blank=True)
 
@@ -178,7 +178,7 @@ class Device(models.Model):
 	# name = models.CharField(max_length=100)
 	serial_number = models.IntegerField('serial_number', null=True, blank=True)
 	assembler = models.ForeignKey(User, on_delete=models.CASCADE)
-	component = models.ForeignKey(GroupComponents, on_delete=models.CASCADE, verbose_name='Прибор')
+	component = models.ForeignKey(Bom, on_delete=models.CASCADE, verbose_name='Прибор')
 	
 	
 
@@ -192,7 +192,7 @@ class TrashComponents(models.Model):
 	# write_of_component = models.ManyToManyField('Component', blank=True)
 	
 	# count_detail = models.IntegerField('количество списанных деталей', null=True, blank=True)
-	write_off_group_ditail = models.ForeignKey('groupcomponents', on_delete=models.CASCADE, blank=True, null = True)
+	write_off_group_ditail = models.ForeignKey('bom', on_delete=models.CASCADE, blank=True, null = True)
 	count_group_detail = models.IntegerField('количество плат', blank=True, null = True)
 
 	def __str__(self):
