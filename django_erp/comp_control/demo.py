@@ -65,7 +65,7 @@ def forma(request):
 					y = [q.part_number for q in quantity_list]
 					# quantity_list_2 = Component.objects.filter(quantitycomponent__part_number = y[2] )
 					for qc_object in quantity_list:
-						qc_object
+						qc_object 
 
 					forma_write_off.save()
 					context['component_list'] = quantity_list
