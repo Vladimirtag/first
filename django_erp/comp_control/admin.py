@@ -10,9 +10,9 @@ class ComponentAdmin(admin.ModelAdmin):
 	search_fields = ('number', 'name')
 	list_filter = ('type_ditail',)
 	list_editable = ('count',)
-	actions = ('name',)
+	actions = ('name')
 	# formfield_overrides = { models.TextField: {'widget': RichTextEditorWidget}, }
-	form = forms.ComponentForms #ссылка на мою форму
+	# form = forms.ComponentForms #ссылка на мою форму
 
 
 # class BoxInLine(admin.StackedInline):

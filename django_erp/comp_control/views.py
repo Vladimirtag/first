@@ -2,9 +2,12 @@ from django.shortcuts import render, render_to_response, redirect
 from comp_control.models import Bom, Component, QuantityComponent, TrashComponents
 import xlrd, csv
 from django.template import RequestContext, loader
-from comp_control.forms import GroupComponentsForm, TrashComponentsForm
+from comp_control.forms import GroupComponentsForm, TrashComponentsForm, ComponentForms
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.db.models import Count
+from django.db.models import Count, F
+import pickle
+from django.utils import timezone
+import datetime
 # Create your views here.
 
 
@@ -39,6 +42,8 @@ def jsres(request):
 def forma(request):
 	if request.method == 'POST':
 		form = TrashComponentsForm(request.POST)
+		componentForm = ComponentForms(request.POST)
+		
 		context = {}
 		if form.is_valid():
 			context['device'] = form.cleaned_data['write_off_group_ditail']
@@ -76,28 +81,14 @@ def forma(request):
 				if form.is_valid():
 					forma_write_off = form.save(commit = False)
 					device = form['write_off_group_ditail']
-					quantity_list = QuantityComponent.objects.all()#возьми все детали пары "имя/количество"" для инстанса Bom
-					# quantity_obj = quantity_list.get(id = 1 )
-					# components = quantity.filter()
-
-					# for component in quantity_list: #QuantityComponent'ы ПАРЫ ОБЪЕКТЫ
-					y = [q.part_number for q in quantity_list]
-					# quantity_list_2 = Component.objects.filter(quantitycomponent__part_number = y[2] )
-
-
-					for qc_object in quantity_list:
-						# quantity_list_2 = Component.objects.get(quantitycomponent__part_number = qc_object.part_number )
-						qc_object
-
+					# quantity_list = QuantityComponent.objects.filter(bom__name = 'StarDiagnos')#возьми все детали пары "имя/количество"" для инстанса Bom
+					forma_write_off.count_group_detail = form.cleaned_data['count_group_detail']
 					forma_write_off.save()
-					# component = [q.part_number for q in quantity_list]
-					# write_of_forma = form.save()
-					# context['rrr'] = summ_detail
-					context['component_list'] = quantity_list
-					# context['component']=component
-					context['component_2'] = qc_object
-					# context['comp']=res
+
+			context['componentForm'] = componentForm
 			return render(request, 'count_center.html', context)
+		if componentForm.is_valid():
+			pass
 	else:
 		form = TrashComponentsForm()
 	return render(request, 'choice_form.html', {'myforma':form})

@@ -46,7 +46,11 @@ class Box(models.Model):
 
 
 class Component(models.Model):#Blog
-	name = models.CharField(max_length=100, verbose_name = 'Part number')
+	ACTION = (
+        (0, 'Minus'),
+        (1, 'Plus'),
+        )
+	name = models.CharField( max_length=100, verbose_name = 'Имя позиции')
 	analog = models.ForeignKey("Component", on_delete=models.CASCADE, null=True, blank=True)
 	number = models.IntegerField()
 	article = models.CharField(max_length=100, verbose_name='Артикул', null=True, blank=True)
@@ -60,6 +64,9 @@ class Component(models.Model):#Blog
 	#value = models.ForeignKey("Values", on_delete=models.CASCADE, null=True, blank=True)
 	type_ditail = models.ForeignKey("Type", on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Тип')
 	unit = models.ForeignKey("Unit", on_delete=models.CASCADE, null=True, verbose_name = 'Единица измерения')
+	action = models.IntegerField(choices = ACTION, null=True)
+	number_action = models.IntegerField(null = True)
+	
 
 	def mycount(self):
 		return '{0}'.format(self.count)
@@ -67,6 +74,8 @@ class Component(models.Model):#Blog
 
 	def __str__(self):
 		return "{0} | {1} ".format(self.number, self.name)
+
+
 
 class Package(models.Model):
 	type = models.CharField(max_length=100, verbose_name='Тип упаковки компонента')
@@ -149,17 +158,19 @@ class QuantityComponent(models.Model): #подсчитанные компоне�
 		num = self.part_number.number
 		return num
 
+
+
 	# def save(self, *args, **kwargs):
 	# 	summ = self.quantity * 10000
 	# 	super(QuantityComponent, self).save(*args, **kwargs)
 	# 	return summ
 
-	def save(self):
-		super(QuantityComponent, self).save()
-		quantity_list = QuantityComponent.objects.all()
-		for q_list in  quantity_list:
-			if q_list.part_number == self.part_number:
-				return redirect('/index/')
+	# def save(self):
+	# 	super(QuantityComponent, self).save()
+	# 	quantity_list = QuantityComponent.objects.all()
+	# 	for q_list in  quantity_list:
+	# 		if q_list.part_number == self.part_number:
+	# 			return redirect('/index/')
 
 
 
@@ -188,13 +199,10 @@ class Device(models.Model):
 class TrashComponents(models.Model):
 	data = models.DateTimeField('date_create', auto_now_add=True, blank=True)
 	user = models.ForeignKey('user', on_delete=models.CASCADE)
-	# write_off_ditail_in_bom = models.ManyToManyField('QuantityComponent', blank=True)
-	# write_of_component = models.ManyToManyField('Component', blank=True)
-	
-	# count_detail = models.IntegerField('количество списанных деталей', null=True, blank=True)
 	write_off_group_ditail = models.ForeignKey('bom', on_delete=models.CASCADE, blank=True, null = True)
-	count_group_detail = models.IntegerField('количество плат', blank=True, null = True)
+	count_group_detail = models.IntegerField( blank=True, null = True)
 
 	def __str__(self):
 		return '{0}'.format(self.write_off_group_ditail)
+
 

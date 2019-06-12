@@ -21,7 +21,7 @@
 		
 		</h3>
 	</tr>
-	
+<form action="" method="POST" name='proba'>
 {% for x, mnoj_result, z in full  %}
 	<tr>
 		<td>
@@ -50,8 +50,11 @@
 		
 	</tr>
 {% endfor %}
+		<input type="submit" value="Смотрим" name='s' /> <p></p>
+		<form action="" method="POST" name='wrt'>
 	<tr>
-		<td></td>
+		<td>
+		</td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -68,28 +71,10 @@
 </table>
 
 
-<br> <h3>
-		Всего позиций: {{count_quantity_group}}
-	</h3>
-	<h3>
-	Список для всего устройства
-	</h3>
- <p></p>
-{{ component_list}}
-<p></p>
------------------------------------
-	<h3>
-	List для всего устройства
-	</h3>
-<p></p>
-Количество: for{{ component }}
-<p></p>
------------------------------------
-<p></p>
-{{ comp}}
-<p></p>
--_________________
-<h3>2</h3>
-<p></p>
-{{ component_2 }}
+	<form action="" method="post">
+		
+	{% csrf_token %}	
+	{{ componentForm.as_p }}
+	<input type="submit" value="Применить" name="component">
+	</form>
 {% endblock content %}
